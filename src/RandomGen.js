@@ -13,7 +13,7 @@ class RandomGen extends React.Component{
 
 
     
-
+    //Retrieves the number of seasons in the selected episode
     getSeasonDetails(){
         const urlString = "https://api.themoviedb.org/3/tv/" + this.props.buttonId + "?api_key=6e8556079c0e1a842e60fdb88680228f";
         $.ajax({
@@ -30,6 +30,7 @@ class RandomGen extends React.Component{
         });
       }
 
+      //Retrieves the number of episodes in the provided season
     getEpisodeDetails(){
         const urlString = "https://api.themoviedb.org/3/tv/" + this.props.buttonId + "/season/" + (this.state.season) + "?api_key=6e8556079c0e1a842e60fdb88680228f";
         

@@ -12,25 +12,28 @@ class App extends React.Component{
     
     //this.performSearch();
     this.searchHandler = this.searchHandler.bind(this);
-    this.performSearch("https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US&page=1")
+    this.performSearch("https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US")
   }
 
-
+  //Accepts argument from search and concatenates to query URL
   searchHandler(e){
     e.preventDefault();
+    //If the search value is empty reset the state and display the most popular
     if(e.target.value === ''){
       this.setState({tvCards: []});
-      const popularUrl = "https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US&page=1";
+      const popularUrl = "https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US";
       this.performSearch(popularUrl);
     }
+    //If the user is typing in a custom search concatenate to query URL
     if(e.target.id === "customSearch"){
       const urlString = "https://api.themoviedb.org/3/search/tv?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US&query=" + e.target.value;
       this.performSearch(urlString);
     }
+    //If the user selects the Popular link in the nav clear the current results\search input and display most popular
     else if(e.target.className === "nav-link"){
       document.getElementById("customSearch").value = "";
       this.forceUpdate();
-      const popularUrl = "https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US&page=1";
+      const popularUrl = "https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US";
       this.performSearch(popularUrl);
       
     }
@@ -38,15 +41,15 @@ class App extends React.Component{
     
   }
 
+//Makes call to The Movie Database API using jquery and AJAX
  performSearch(searchTerm){
-    
     var tvArray = [];
-
     $.ajax({
       url: searchTerm,
       success: (searchResults) => {
         const results = searchResults.results;
         
+        //Loop through the results and create a <ResultsCol> for each episode and push to the tvArray
         results.forEach((episode) => {
           if(episode.poster_path != null){
           episode.tvImg = "https://image.tmdb.org/t/p/w500" + episode.poster_path;
@@ -56,7 +59,7 @@ class App extends React.Component{
           }
         })
       
-      
+        //Add all of the result cards to the state
         this.setState({tvCards: tvArray});
       },
       error: (xhr, status, err) => {

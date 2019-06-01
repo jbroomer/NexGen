@@ -11,6 +11,7 @@ class ResultsCol extends React.Component{
     this.visitShowPage = this.visitShowPage.bind(this);
   }
 
+  //Changes the state to open to display the generated episode
   onClick(id){
     let stateArray = this.state.buttons;
     stateArray.forEach((button) => {
@@ -21,6 +22,7 @@ class ResultsCol extends React.Component{
     this.setState({buttons: stateArray});
   }
 
+  //Opens new tab to a description page
   visitShowPage(){
     const newPage = "https://www.themoviedb.org/tv/" + this.props.episode.id + "?language=en-US"
     window.open(newPage);
@@ -34,13 +36,13 @@ class ResultsCol extends React.Component{
           <Card.Img onClick = {this.visitShowPage} style = {{width: '100%', height: '400px'}} variant="top" src = {this.props.episode.tvImg}/>
           <Card.Body>
             <Card.Title>{this.props.episode.name} ({this.props.episode.year})</Card.Title>
-            {/* <Card.Text>{this.props.episode.overview}</Card.Text> */}
+            
             <Button 
             id = {tvIdString} 
             variant="outline-secondary" 
             onClick = {() => {this.setState({open: !this.state.open}); }}
-            style = {{width: '100%', marginLeft: 'auto', marginRight:'auto', marginBottom: '10px'}}>
-              
+            style = {{width: '100%', marginLeft: 'auto', marginRight:'auto', marginBottom: '10px'
+            }}>
               Random Episode
             </Button>
 
