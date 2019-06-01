@@ -33,7 +33,7 @@ class ResultsCol extends React.Component{
           <Card>
           <Card.Img onClick = {this.visitShowPage} style = {{width: '100%', height: '400px'}} variant="top" src = {this.props.episode.tvImg}/>
           <Card.Body>
-            <Card.Title>{this.props.episode.original_name} ({this.props.episode.year})</Card.Title>
+            <Card.Title>{this.props.episode.name} ({this.props.episode.year})</Card.Title>
             {/* <Card.Text>{this.props.episode.overview}</Card.Text> */}
             <Button 
             id = {tvIdString} 
