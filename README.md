@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a little project of mine that will generate a random episode of any TV Show you search. There is also a popular page if you are looking for a new show to start. Using The Movie Database API made it very straight forward in fetching data.
 
 ## Available Scripts
 
