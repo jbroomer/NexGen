@@ -8,9 +8,7 @@ class App extends React.Component{
     super(props);
 
     this.state = {};
-    //this.performSearch = this.performSearch.bind(this);
     
-    //this.performSearch();
     this.searchHandler = this.searchHandler.bind(this);
     this.performSearch("https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US")
   }
@@ -35,10 +33,7 @@ class App extends React.Component{
       this.forceUpdate();
       const popularUrl = "https://api.themoviedb.org/3/tv/popular?api_key=6e8556079c0e1a842e60fdb88680228f&language=en-US";
       this.performSearch(popularUrl);
-      
     }
-    
-    
   }
 
 //Makes call to The Movie Database API using jquery and AJAX
@@ -47,8 +42,8 @@ class App extends React.Component{
     $.ajax({
       url: searchTerm,
       success: (searchResults) => {
+        console.log("Searching...");
         const results = searchResults.results;
-        
         //Loop through the results and create a <ResultsCol> for each episode and push to the tvArray
         results.forEach((episode) => {
           if(episode.poster_path != null){
@@ -63,25 +58,10 @@ class App extends React.Component{
         this.setState({tvCards: tvArray});
       },
       error: (xhr, status, err) => {
-
+        
       }
     });
   }
-    
-  //   fetch(urlString)
-  //   .then(function(response) {
-  //     return response.json();
-  //   })
-  //   .then(function(data) {
-  //     const episodes = (data.results);
-      
-  //     episodes.forEach(function(episode) {
-  //       var nextCard = <ResultsCol episode = {episode}/>
-  //       tvArray.push(nextCard);
-  //     });
-  //   });
-  //   return tvArray;
-  // }
 
   render(){
     return<div>
@@ -110,12 +90,9 @@ class App extends React.Component{
         <Row>
         {this.state.tvCards}
         </Row>
-      </Container>      
-
+      </Container>
     </div>
   }
-
-
 }
 
 export default App;
