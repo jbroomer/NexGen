@@ -25,7 +25,6 @@ class RandomGen extends React.Component{
         $.ajax({
           url: urlString,
           success: (searchResults) => {
-            console.log("Searching...2");
             const numSeason = (searchResults.number_of_seasons);
             const randomSeason = Math.floor(Math.random() * (+(numSeason+1) - +1)) + + 1;
           
@@ -40,12 +39,10 @@ class RandomGen extends React.Component{
       //Retrieves the number of episodes in the provided season
     getEpisodeDetails(){
         const urlString = "https://api.themoviedb.org/3/tv/" + this.props.buttonId + "/season/" + (this.state.season) + "?api_key=6e8556079c0e1a842e60fdb88680228f";
-        
         let randomEpisode;
         $.ajax({
           url: urlString,
           success: (searchResults) => {
-            console.log("Searching...3");
             const numEpisodes = (searchResults.episodes.length);
             randomEpisode = Math.floor(Math.random() * (+(numEpisodes+1) - +1)) + + 1;
             this.setState({episode: randomEpisode});
@@ -64,7 +61,13 @@ class RandomGen extends React.Component{
             <Button 
                 id = {this.props.buttonId} 
                 variant="outline-secondary" 
-                onClick = {() => {this.setState({open: !this.state.open}); this.getSeasonDetails(); this.getEpisodeDetails();}}
+                onClick = {() => {
+                    if(this.state.open === false){
+                        this.getSeasonDetails();
+                        this.getEpisodeDetails();
+                    }
+                    this.setState({open: !this.state.open}); 
+                }}
                 style = {{width: '100%', marginLeft: 'auto', marginRight:'auto', marginBottom: '10px'
                 }}>
                     Random Episode
