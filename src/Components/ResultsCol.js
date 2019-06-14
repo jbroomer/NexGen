@@ -1,6 +1,7 @@
 import React from 'react';
-import {Card, Button, Col, Collapse} from 'react-bootstrap';
+import {Card, Col,} from 'react-bootstrap';
 import RandomGen from './RandomGen.js';
+
 class ResultsCol extends React.Component{
   constructor(props){
     super(props);
