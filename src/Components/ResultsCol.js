@@ -21,8 +21,7 @@ class ResultsCol extends React.Component{
   componentWillUnmount() {
     clearTimeout(this.resizeTimout);
     delete this.resizeTimout;
-    window.removeEventListener(this.resizeListener);
-    delete this.resizeListener;
+    window.removeEventListener('resize', this.updateSize);
   }
   //Opens new tab to a description page
   visitShowPage(){

@@ -28,7 +28,6 @@ class App extends React.Component{
   //Accepts argument from search and concatenates to query URL
   searchHandler(e){
     e.preventDefault();
-    console.log(e.target);
     //If the search value is empty reset the state and display the most popular
     if(e.target.value === ''){
       this.setState({tvCards: []});
@@ -80,7 +79,7 @@ class App extends React.Component{
       }
     });
   }
-  
+
   renderNoResults = () => (
     <div className="no-results">
       <h2>No Results</h2>
