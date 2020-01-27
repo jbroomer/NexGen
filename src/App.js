@@ -6,7 +6,7 @@ import Search from './Components/search';
 import $ from 'jquery';
 import './App.css';
 
-const key = 'api_key=6e8556079c0e1a842e60fdb88680228f';
+const key = "api_key=6e8556079c0e1a842e60fdb88680228f";
 
 class App extends React.Component{
   constructor(props){
@@ -22,7 +22,7 @@ class App extends React.Component{
   }
 
   componentDidMount() {
-    this.performSearch(`https://api.themoviedb.org/3/tv/popular?${key}&language=en-US`)
+    this.performSearch("https://api.themoviedb.org/3/tv/popular?" + key + "&language=en-US")
   }
 
   //Accepts argument from search and concatenates to query URL
@@ -31,25 +31,25 @@ class App extends React.Component{
     //If the search value is empty reset the state and display the most popular
     if(e.target.value === ''){
       this.setState({tvCards: []});
-      const popularUrl = `https://api.themoviedb.org/3/tv/popular?${key}&language=en-US`;
+      const popularUrl = "https://api.themoviedb.org/3/tv/popular?" + key + "&language=en-US";
       this.performSearch(popularUrl);
     }
     //If the user is typing in a custom search concatenate to query URL
     else if(e.target.id === "customSearch"){
-      const urlString = `https://api.themoviedb.org/3/search/tv?${key}&language=en-US&query=` + e.target.value;
+      const urlString = "https://api.themoviedb.org/3/search/tv?" + key + "&language=en-US&query=" + e.target.value;
       this.performSearch(urlString);
     }
     //If the user selects the Popular link in the nav clear the current results\search input and display most popular
     else if(e.target.className === "popular nav-link"){
       document.getElementById("customSearch").value = "";
       this.forceUpdate();
-      const popularUrl = `https://api.themoviedb.org/3/tv/popular?${key}&language=en-US`;
+      const popularUrl = "https://api.themoviedb.org/3/tv/popular?" + key + "&language=en-US";
       this.performSearch(popularUrl);
     }
     else if(e.target.className === "topRated nav-link"){
       document.getElementById("customSearch").value = "";
       this.forceUpdate();
-      const topRatedUrl = `https://api.themoviedb.org/3/tv/top_rated?${key}&language=en-US`;
+      const topRatedUrl = "https://api.themoviedb.org/3/tv/top_rated?" + key + "&language=en-US";
       this.performSearch(topRatedUrl);
     }
   }
