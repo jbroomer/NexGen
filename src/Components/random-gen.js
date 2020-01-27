@@ -1,10 +1,12 @@
 import React from 'react';
 import $ from 'jquery';
 import {Button, Collapse} from 'react-bootstrap';
+import './styles/random-gen.css';
 
 class RandomGen extends React.Component{
   constructor(props){
     super(props);
+    this.getRandomGen = this.getRandomGen.bind(this);
     this.state = {season: 1, episode: 1, open: false};
   }
   //Changes the state to open to display the generated episode
@@ -25,8 +27,8 @@ class RandomGen extends React.Component{
       url: urlString,
       success: (searchResults) => {
         const numSeason = (searchResults.number_of_seasons);
-        const randomSeason = Math.floor(Math.random() * (+(numSeason+1) - +1)) + + 1;
-      
+        console.log("Season: " + numSeason);
+        const randomSeason = this.getRandomGen(numSeason);
         this.setState({season: randomSeason});
     },
       error: (xhr, status, err) => {
@@ -43,7 +45,8 @@ class RandomGen extends React.Component{
       url: urlString,
       success: (searchResults) => {
         const numEpisodes = (searchResults.episodes.length);
-        randomEpisode = Math.floor(Math.random() * (+(numEpisodes+1) - +1)) + + 1;
+        console.log("Episodes: " + numEpisodes)
+        randomEpisode = this.getRandomGen(numEpisodes);
         this.setState({episode: randomEpisode});
     },
       error: (xhr, status, err) => {
@@ -52,12 +55,17 @@ class RandomGen extends React.Component{
     });
   }
 
+  getRandomGen = (num) => {
+    return Math.floor(Math.random() * (num)) + 1;
+  }
+
 
   render(){ 
     return (
       <div style = {{textAlign: 'center'}}>
         <Button 
           id = {this.props.buttonId} 
+          style={{ marginBottom: '10px'}}
           variant="outline-secondary" 
           onClick = {() => {
             if(this.state.open === false){
@@ -70,9 +78,9 @@ class RandomGen extends React.Component{
           Random Episode
         </Button>
       <Collapse id = {this.props.buttonId} in={this.state.open} >
-        <div>
+        <div className="random-episode-text">
           Season: {this.state.season} Episode: {this.state.episode}
-          <img alt = 'refresh' src = './refresh.png' style = {{width: '25px', marginLeft: '20px'}} onClick = {() => {
+          <img alt = 'refresh' src = './refresh.png' className="refresh-button" style = {{width: '25px', marginLeft: '20px'}} onClick = {() => {
             this.getSeasonDetails();
             this.getEpisodeDetails();
           }}/>

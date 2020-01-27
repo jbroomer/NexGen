@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Container } from 'react-bootstrap';
-import ResultsCol from './Components/ResultsCol.js';
+import ResultsCol from './Components/results-col';
 import AppBar from './Components/app-bar';
 import Search from './Components/search';
 import $ from 'jquery';

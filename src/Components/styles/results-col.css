@@ -1,0 +1,12 @@
+.column {
+  padding-bottom: 10px;
+}
+
+.card-body {
+  align-self: center;
+}
+
+.card-image {
+  width: inherit;
+  max-height: 300px;
+}

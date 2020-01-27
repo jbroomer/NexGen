@@ -6,7 +6,7 @@ const Search = ({
 }) => {
   return (
     <Card className="search">
-      <Card.Body>
+      <Card.Body className="search-input">
       <InputGroup size="md" >
         <InputGroup.Prepend>
           <InputGroup.Text id="inputGroup-sizing-md">Search</InputGroup.Text>
