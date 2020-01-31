@@ -4,5 +4,6 @@
 
 .refresh-button {
  width: 25px;
- margin: auto;
+ height: 25px;
+ margin-left: 5px;
 }

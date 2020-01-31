@@ -79,7 +79,7 @@ class RandomGen extends React.Component{
       <Collapse id = {this.props.buttonId} in={this.state.open} >
         <div className="random-episode-text">
           Season: {this.state.season} Episode: {this.state.episode}
-          <img alt = 'refresh' src = './refresh.png' className="refresh-button" style = {{width: '25px', marginLeft: '20px'}} onClick = {() => {
+          <img alt = 'refresh' src = './refresh.png' className="refresh-button" onClick = {() => {
             this.getSeasonDetails();
           }}/>
         </div>
