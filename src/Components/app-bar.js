@@ -3,8 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 const AppBar = ({
   searchHandler
-}) => {
-  return (
+}) => (
     <Navbar bg="light" expand="lg" style = {{marginBottom: '20px'}}>
       <Navbar.Brand href="#home">NexGen</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -15,7 +14,6 @@ const AppBar = ({
         </Nav>
       </Navbar.Collapse>
     </Navbar>
-  );
-}
+);
 
 export default AppBar;

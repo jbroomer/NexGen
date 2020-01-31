@@ -57,7 +57,7 @@ class ResultsCol extends React.Component{
     const { id, name, year, tvImg} = this.props.episode;
     const tvIdString = (id).toString();
       return (
-        <Col className="column" xs={this.state.screen > 900 ? 4 : 6}>
+        <Col className="column" xs={window.screen.width > 900 ? 3 : 6}>
           <Card>
             <Card.Img
               className="card-image"
@@ -65,8 +65,10 @@ class ResultsCol extends React.Component{
               variant="top" 
               src={tvImg}
             />
+            <Card.ImgOverlay>
+              {name} ({year})
+            </Card.ImgOverlay>
             <Card.Body className="card-body">
-              <Card.Title className="card-title">{name} ({year})</Card.Title>
               <RandomGen buttonId = {tvIdString} title = {name}/>
             </Card.Body>
           </Card>

@@ -3,7 +3,6 @@ import { Row, Container } from 'react-bootstrap';
 import ResultsCol from './Components/results-col';
 import AppBar from './Components/app-bar';
 import Search from './Components/search';
-import $ from 'jquery';
 import './App.css';
 
 const key = "api_key=6e8556079c0e1a842e60fdb88680228f";
@@ -57,10 +56,10 @@ class App extends React.Component{
 //Makes call to The Movie Database API using jquery and AJAX
  performSearch(searchTerm){
     var tvArray = [];
-    $.ajax({
-      url: searchTerm,
-      success: (searchResults) => {
-        const results = searchResults.results;
+    fetch(searchTerm)
+    .then((response) => response.json())
+    .then((searchResults) => {
+      const results = searchResults.results;
         //Loop through the results and create a <ResultsCol> for each episode and push to the tvArray
         results.forEach((episode) => {
           if(episode.poster_path != null){
@@ -73,10 +72,9 @@ class App extends React.Component{
       
         //Add all of the result cards to the state
         this.setState({tvCards: tvArray});
-      },
-      error: (xhr, status, err) => {
-        console.log(err);
-      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
     });
   }
 
@@ -92,7 +90,7 @@ class App extends React.Component{
       <Search searchHandler={this.searchHandler} />
       <Container>
         <Row>
-        {this.state.tvCards.length > 0 ? this.state.tvCards : this.renderNoResults()}
+          {this.state.tvCards.length > 0 ? this.state.tvCards : this.renderNoResults()}
         </Row>
       </Container>
     </div>

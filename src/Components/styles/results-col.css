@@ -7,6 +7,16 @@
 }
 
 .card-image {
-  width: inherit;
-  max-height: 300px;
+  object-fit: contain;
+}
+
+.card-img-overlay {
+  z-index: -1;
+}
+
+.card-img-overlay:hover {
+  z-index: 9999;
+  background: rgba(1,1,1,.5);
+  color: white;
+  height: min-content;
 }
