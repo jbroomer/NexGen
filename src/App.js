@@ -53,7 +53,6 @@ class App extends React.Component{
     }
   }
 
-//Makes call to The Movie Database API using jquery and AJAX
  performSearch(searchTerm){
     var tvArray = [];
     fetch(searchTerm)
