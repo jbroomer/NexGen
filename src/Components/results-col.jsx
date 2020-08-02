@@ -54,16 +54,16 @@ class ResultsCol extends React.Component{
   }
   
   render(){
-    const { id, name, year, tvImg} = this.props.episode;
+    const { id, name, year, img} = this.props.episode;
     const tvIdString = (id).toString();
       return (
-        <Col className="column" xs={window.screen.width > 900 ? 3 : 6}>
+        <Col className="column" xs={window.screen.width > 900 ? 3 : 9}>
           <Card>
             <Card.Img
               className="card-image"
               onClick = {this.visitShowPage} 
               variant="top" 
-              src={tvImg}
+              src={img}
             />
             <Card.ImgOverlay>
               {name} ({year})

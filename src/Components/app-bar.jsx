@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap'; 
+import resultTypes from './utils/resultTypeMap';
 
 const AppBar = ({
   searchHandler
@@ -9,8 +10,8 @@ const AppBar = ({
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id = "popular">
         <Nav id = "popular" className="mr-auto">
-          <Nav.Link className = "popular" onClick = {searchHandler}>Popular</Nav.Link>
-          <Nav.Link className = "topRated" onClick = {searchHandler}>Top Rated</Nav.Link>
+          <Nav.Link className = "popular" onClick = {searchHandler.bind(this, resultTypes.popular)}>Popular</Nav.Link>
+          <Nav.Link className = "topRated" onClick = {searchHandler.bind(this, resultTypes.topRated)}>Top Rated</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

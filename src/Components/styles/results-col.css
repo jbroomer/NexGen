@@ -8,6 +8,7 @@
 
 .card-image {
   object-fit: contain;
+  cursor: pointer;
 }
 
 .card-img-overlay {
