@@ -1,7 +1,7 @@
 const resultTypes = {
   popular: 'popular',
   topRated: 'topRated',
-  custom: 'custom'
+  custom: 'custom',
 };
 
 export default resultTypes;

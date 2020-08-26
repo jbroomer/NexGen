@@ -4,7 +4,7 @@ import reducers from './reducers';
 
 const store = createStore(
   reducers,
-  applyMiddleware(thunk)
+  applyMiddleware(thunk),
 );
 
 export default store;
