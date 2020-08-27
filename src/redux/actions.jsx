@@ -31,7 +31,7 @@ const performSearch = (type, url) => (
         )).map((episode) => ({
           id: episode.id,
           img: `https://image.tmdb.org/t/p/w500${episode.poster_path}`,
-          year: episode.first_air_date.substring(0, 4),
+          year: episode.first_air_date?.substring(0, 4),
         }));
         dispatch(addResults(type, resultsToAdd));
       }).then(() => {

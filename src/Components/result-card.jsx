@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 import RandomGen from './random-gen';
-import './styles/results-col.css';
+import './styles/result-card.css';
 /**
  * Returns a bootstrap column component containing all card media required
  * to generate a random epidsoe. Also, hooks up link to redirect to show info
@@ -22,7 +22,7 @@ const ResultCard = ({
   episode,
 }) => {
   const {
-    id, name, year, img,
+    id, img,
   } = episode;
   // Opens new tab to a description page
   const visitShowPage = () => {
@@ -38,9 +38,6 @@ const ResultCard = ({
         variant="top"
         src={img}
       />
-      <Card.ImgOverlay>
-        {`${name} (${year})`}
-      </Card.ImgOverlay>
       <Card.Body className="card-body">
         <RandomGen buttonId={id.toString()} />
       </Card.Body>

@@ -9,10 +9,7 @@
 .card-image {
   object-fit: contain;
   cursor: pointer;
-}
-
-.card-img-overlay {
-  z-index: -1;
+  user-select: none; 
 }
 
 .card-img-overlay:hover {

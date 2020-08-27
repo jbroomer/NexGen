@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Collapse } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import BoldTextDisplay from './bold-text-display';
 import './styles/random-gen.css';
 
 // TODO
@@ -48,9 +49,9 @@ const RandomGen = ({
     return fetch(urlString)
       .then((response) => response.json())
       .then((searchResults) => {
-        setNumSeasons(searchResults.number_of_seasons,
-          setRandomSeason(getRandomGen(numSeasons)));
-        console.log('Seasons: ', numSeasons);
+        setNumSeasons(searchResults.number_of_seasons);
+        setRandomSeason(getRandomGen(searchResults.number_of_seasons));
+        console.log('Seasons: ', searchResults.number_of_seasons);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -69,7 +70,7 @@ const RandomGen = ({
     setDisplayButton(false);
   };
 
-  const renderRandomButtom = () => (
+  const renderRandomButton = () => (
     displayButton
       ? (
         <Button
@@ -84,17 +85,28 @@ const RandomGen = ({
       : null
   );
 
+  const renderRandomEpisode = () => (
+    <div className="random-gen-container">
+      <div className="random-episode-text">
+        <BoldTextDisplay
+          label="Season:"
+          displayValue={randomSeason.toString()}
+        />
+        <BoldTextDisplay
+          label="Episode:"
+          displayValue={randomEpisode.toString()}
+        />
+      </div>
+      <Button className="refresh-button" variant="light" onClick={onRandomButtonClick}>
+        <img alt="refresh" src="assets/refresh.png" className="refresh-button-icon" />
+      </Button>
+    </div>
+  );
   return (
     <div style={{ textAlign: 'center' }}>
-      {renderRandomButtom()}
-      <Collapse id={buttonId} in={!displayButton}>
-        <div className="random-episode-text">
-          {`Season: ${randomSeason} Episode: ${randomEpisode}`}
-          <Button variant="outline-secondary" onClick={onRandomButtonClick}>
-            <img alt="refresh" src="refresh.png" className="refresh-button" />
-          </Button>
-        </div>
-      </Collapse>
+      {displayButton
+        ? renderRandomButton()
+        : renderRandomEpisode()}
     </div>
   );
 };

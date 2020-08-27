@@ -1,0 +1,12 @@
+.bold-text-display-container {
+  display: flex;
+}
+
+.bold-text-display-label {
+  margin-right: 5px;
+  font-weight: 750;
+}
+
+.bold-text-display-value {
+
+}

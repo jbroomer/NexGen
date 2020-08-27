@@ -1,8 +1,23 @@
+.random-gen-container {
+  display: flex;
+}
+
 .random-episode-text {
-  display: inline-flex;
+  margin: 0px 10px;
 }
 
 .refresh-button {
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 25px;
+}
+
+.refresh-button:hover {
+  background-color: lightgray;
+  border-color: lightgray;
+}
+
+.refresh-button-icon {
  width: 25px;
  height: 25px;
 }
