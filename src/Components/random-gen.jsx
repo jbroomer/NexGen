@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import BoldTextDisplay from './bold-text-display';
+import { refreshRandomEpisode } from '../redux/actions';
 import './styles/random-gen.css';
+
+const mapStateToProps = (state) => ({
+  randomEpisodeById: state.get('randomEpisodeById'),
+  isFetchingEpisode: state.get('isFetchingEpisode'),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateRandomEpisode: (id) => dispatch(refreshRandomEpisode(id)),
+});
 
 // TODO
 /**
@@ -16,57 +27,27 @@ import './styles/random-gen.css';
  */
 const propTypes = {
   buttonId: PropTypes.string.isRequired,
+  isFetchingEpisode: PropTypes.bool.isRequired,
+  randomEpisodeById: PropTypes.shape({
+    get: PropTypes.func,
+  }).isRequired,
+  updateRandomEpisode: PropTypes.func.isRequired,
 };
 
 const RandomGen = ({
   buttonId,
+  isFetchingEpisode,
+  randomEpisodeById,
+  updateRandomEpisode,
 }) => {
-  const [numSeasons, setNumSeasons] = useState(null);
-  const [randomSeason, setRandomSeason] = useState(1);
-  const [randomEpisode, setRandomEpisode] = useState(1);
+  const season = randomEpisodeById?.get(buttonId)?.season;
+  const episode = randomEpisodeById?.get(buttonId)?.episode;
+
   const [displayButton, setDisplayButton] = useState(true);
 
-  const getRandomGen = (num) => Math.floor(Math.random() * (num)) + 1;
-
-  // Retrieves the number of episodes in the provided season
-  const getEpisodeDetails = (season) => {
-    const urlString = `https://api.themoviedb.org/3/tv/${buttonId}/season/${season}?api_key=6e8556079c0e1a842e60fdb88680228f`;
-    fetch(urlString)
-      .then((response) => response.json())
-      .then((searchResults) => {
-        const numEpisodes = (searchResults.episodes.length);
-        console.log('Episodes: ', numEpisodes);
-        setRandomEpisode(getRandomGen(numEpisodes));
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
-
-  // Retrieves the number of seasons in the selected episode
-  const getSeasonDetails = () => {
-    const urlString = `https://api.themoviedb.org/3/tv/${buttonId}?api_key=6e8556079c0e1a842e60fdb88680228f`;
-    return fetch(urlString)
-      .then((response) => response.json())
-      .then((searchResults) => {
-        setNumSeasons(searchResults.number_of_seasons);
-        setRandomSeason(getRandomGen(searchResults.number_of_seasons));
-        console.log('Seasons: ', searchResults.number_of_seasons);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
   // Changes the state to open to display the generated episode
   const onRandomButtonClick = () => {
-    if (!numSeasons) {
-      getSeasonDetails().then(() => {
-        getEpisodeDetails(randomSeason);
-      });
-    } else {
-      setRandomSeason(getRandomGen(numSeasons));
-      getEpisodeDetails(randomSeason);
-    }
+    updateRandomEpisode(buttonId);
     setDisplayButton(false);
   };
 
@@ -90,11 +71,11 @@ const RandomGen = ({
       <div className="random-episode-text">
         <BoldTextDisplay
           label="Season:"
-          displayValue={randomSeason.toString()}
+          displayValue={season?.toString()}
         />
         <BoldTextDisplay
           label="Episode:"
-          displayValue={randomEpisode.toString()}
+          displayValue={episode?.toString()}
         />
       </div>
       <Button className="refresh-button" variant="light" onClick={onRandomButtonClick}>
@@ -104,7 +85,7 @@ const RandomGen = ({
   );
   return (
     <div style={{ textAlign: 'center' }}>
-      {displayButton
+      {displayButton || isFetchingEpisode
         ? renderRandomButton()
         : renderRandomEpisode()}
     </div>
@@ -112,4 +93,4 @@ const RandomGen = ({
 };
 
 RandomGen.propTypes = propTypes;
-export default RandomGen;
+export default connect(mapStateToProps, mapDispatchToProps)(RandomGen);

@@ -14,13 +14,17 @@ const ResultsContainer = ({
   currentResultType,
 }) => {
   // Render card results if there are any
-  const renderCards = () => (
-    results[currentResultType].map((episode) => (
-      <Col key={episode.id} className="column" xs={window.screen.width > 900 ? 3 : 9}>
-        <ResultCard episode={episode} />
-      </Col>
-    ))
-  );
+  const renderCards = () => {
+    const resultArray = [];
+    results[currentResultType].forEach((episode) => {
+      resultArray.push(
+        <Col key={episode.id} className="column" xs={window.screen.width > 900 ? 3 : 9}>
+          <ResultCard episode={episode} />
+        </Col>,
+      );
+    });
+    return resultArray;
+  };
 
   return (
     <Container>

@@ -15,9 +15,9 @@ import './App.css';
 const mapStateToProps = (state) => ({
   loading: state.get('loading'),
   results: {
-    popular: state.get('popular').toJS(),
-    topRated: state.get('topRated').toJS(),
-    custom: state.get('custom').toJS(),
+    popular: state.get('popularById'),
+    topRated: state.get('topRatedById'),
+    custom: state.get('customById'),
   },
 });
 
