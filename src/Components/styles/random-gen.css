@@ -10,6 +10,7 @@
   background-color: transparent;
   border-color: transparent;
   border-radius: 25px;
+  transform: scale(.75)
 }
 
 .refresh-button:hover {
@@ -20,4 +21,17 @@
 .refresh-button-icon {
  width: 25px;
  height: 25px;
+}
+
+.refreshing {
+  animation: spin infinite 1s;
+}
+
+@keyframes spin {
+  0% {
+    transform: scale(.75) rotate(0deg);
+  }
+  100% {
+    transform: scale(.75) rotate(360deg);
+  }
 }

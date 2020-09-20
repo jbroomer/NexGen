@@ -14,7 +14,7 @@ const propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     year: PropTypes.string,
-    img: PropTypes.string,
+    imgPath: PropTypes.string,
   }).isRequired,
 };
 
@@ -22,7 +22,7 @@ const ResultCard = ({
   episode,
 }) => {
   const {
-    id, img,
+    id, imgPath,
   } = episode;
   // Opens new tab to a description page
   const visitShowPage = () => {
@@ -36,7 +36,7 @@ const ResultCard = ({
         className="card-image card-image-animation"
         onClick={visitShowPage}
         variant="top"
-        src={img}
+        src={imgPath}
       />
       <Card.Body className="card-body">
         <RandomGen buttonId={id.toString()} />

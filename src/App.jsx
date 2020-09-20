@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import ResultsContainer from './components/results-container';
 import AppBar from './components/app-bar';
 import Search from './components/search-bar';
@@ -12,41 +11,32 @@ import {
 } from './redux/actions';
 import './App.css';
 
-const mapStateToProps = (state) => ({
-  loading: state.get('loading'),
-  results: {
+const App = () => {
+  // Redux Stuff
+  const loading = useSelector((state) => state.get('loading'));
+  const results = useSelector((state) => ({
     popular: state.get('popularById'),
     topRated: state.get('topRatedById'),
     custom: state.get('customById'),
-  },
-});
+  }), shallowEqual);
+  const dispatch = useDispatch();
 
-const mapDispatchToProps = (dispatch) => ({
-  searchPopularResults: () => dispatch(getPopularResults()),
-  searchTopRatedResults: () => dispatch(getTopRatedResults()),
-  searchCustomResults: (searchString) => dispatch(getCustomResults(searchString)),
-});
+  const searchPopularResults = useCallback(() => {
+    dispatch(getPopularResults());
+  }, [dispatch]);
 
-const propTypes = {
-  loading: PropTypes.bool.isRequired,
-  results: PropTypes.shape([]).isRequired,
-  searchPopularResults: PropTypes.func.isRequired,
-  searchTopRatedResults: PropTypes.func.isRequired,
-  searchCustomResults: PropTypes.func.isRequired,
-};
+  const searchTopRatedResults = useCallback(() => {
+    dispatch(getTopRatedResults());
+  }, [dispatch]);
 
-const App = ({
-  loading,
-  results,
-  searchPopularResults,
-  searchTopRatedResults,
-  searchCustomResults,
-}) => {
+  const searchCustomResults = useCallback((searchText) => {
+    dispatch(getCustomResults(searchText));
+  }, [dispatch]);
+
   const [currentResultType, setCurrentResultType] = useState(resultTypes.popular);
-
   // Startup on popular results
   useEffect(() => {
-    searchPopularResults();
+    dispatch(getPopularResults());
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -80,13 +70,13 @@ const App = ({
   const renderIsLoading = () => 'Loading...';
 
   const renderNoResults = () => (
-    loading
-      ? renderIsLoading()
-      : (
+    !loading && !results[currentResultType].length
+      ? (
         <div className="no-results">
           <h2>No Results</h2>
         </div>
       )
+      : renderIsLoading()
   );
 
   const renderResults = () => (
@@ -101,7 +91,7 @@ const App = ({
   );
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div className="app__container">
       <AppBar searchHandler={searchHandler} />
       <Search
         currentResultType={currentResultType}
@@ -111,5 +101,4 @@ const App = ({
     </div>
   );
 };
-App.propTypes = propTypes;
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

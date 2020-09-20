@@ -6,11 +6,11 @@ const INITIAL_STATE = immutable.fromJS({
   loading: false,
   isFetchingEpisode: false,
   key: 'api_key=6e8556079c0e1a842e60fdb88680228f',
-  currentResultType: resultsTypeMap.popular,
   topRatedById: immutable.Map({}),
   popularById: immutable.Map({}),
   customById: immutable.Map({}),
   seasonsById: immutable.Map({}),
+  episodesById: immutable.Map({}),
   randomEpisodeById: immutable.Map({}),
 });
 
@@ -52,6 +52,14 @@ const setRandomEpisode = (state, id, randomSeason, randomEpisode) => (
   }))
 );
 
+const addEpisodeData = (state, id, season, episodeData) => (
+  state.updateIn(['episodesById', id, season, episodeData.episode_number],
+    () => ({
+      episodeName: episodeData.name,
+      overview: episodeData.overview,
+    }))
+);
+
 const movieSearch = (state = INITIAL_STATE, action) => {
   if (state === undefined) {
     return INITIAL_STATE;
@@ -59,12 +67,14 @@ const movieSearch = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.SET_IS_LOADING:
       return state.set('loading', action.data.loading);
+    case actionTypes.SET_IS_FETCHING_EPISODE:
+      return state.set('isFetchingEpisode', action.data.isFetching);
     case actionTypes.CLEAR_SEARCH_RESULTS_CUSTOM:
       return state.updateIn(['customById'], () => immutable.OrderedMap({}));
     case actionTypes.SET_NUM_SEASONS:
       return addNumSeasons(state, action.data.id, action.data.numSeasons);
     case actionTypes.SET_NUM_EPISODES:
-      return addNumEpisodes(state, action.data.id, action.data.season, action.datanumEpisodes);
+      return addNumEpisodes(state, action.data.id, action.data.season, action.data.numEpisodes);
     case actionTypes.UPDATE_SEARCH_RESULTS_CUSTOM:
       return addShowResultsToStore(state, resultsTypeMap.custom, action.data);
     case actionTypes.UPDATE_SEARCH_RESULTS_POPULAR:
@@ -77,6 +87,13 @@ const movieSearch = (state = INITIAL_STATE, action) => {
         action.data.id,
         action.data.randomSeason,
         action.data.randomEpisode,
+      );
+    case actionTypes.SAVE_EPISODE_DATA:
+      return addEpisodeData(
+        state,
+        action.data.id,
+        action.data.season,
+        action.data.episodeData,
       );
     default:
       return state;

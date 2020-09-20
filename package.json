@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@welldone-software/why-did-you-render": "5.0.0-alpha.2",
     "immutable": "4.0.0-rc.12",
     "prop-types": "15.7.2",
     "react": "16.13.1",
@@ -10,6 +11,7 @@
     "react-dom": "16.13.1",
     "react-redux": "7.2.1",
     "react-scripts": "3.4.3",
+    "react-spring": "8.0.27",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
     "webpack": "4.42.0"
@@ -17,7 +19,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode=development",
     "build": "webpack --mode=production",
-    "test": "react-scripts test",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,12 +42,13 @@
     "@babel/core": "7.10.5",
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/plugin-proposal-optional-chaining": "7.11.0",
-    "@babel/preset-env": "7.11.0",
+    "@babel/preset-env": "7.11.5",
+    "@babel/preset-react": "7.10.4",
+    "babel-jest": "26.3.0",
     "babel-loader": "8.1.0",
     "css-loader": "4.2.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
-    "eslint": "7.2.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
@@ -52,6 +56,10 @@
     "eslint-plugin-react-hooks": "4.0.0",
     "file-loader": "6.0.0",
     "html-webpack-plugin": "4.3.0",
+    "jasmine": "3.6.1",
+    "jest": "26.4.2",
+    "jest-transform-css": "2.0.0",
+    "react-test-renderer": "16.13.1",
     "style-loader": "1.2.1",
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.11.0"

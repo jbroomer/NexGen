@@ -44,10 +44,12 @@ const RandomGen = ({
   const episode = randomEpisodeById?.get(buttonId)?.episode;
 
   const [displayButton, setDisplayButton] = useState(true);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // Changes the state to open to display the generated episode
   const onRandomButtonClick = () => {
     updateRandomEpisode(buttonId);
+    setIsAnimating(true);
     setDisplayButton(false);
   };
 
@@ -56,6 +58,7 @@ const RandomGen = ({
       ? (
         <Button
           id={buttonId}
+          className="random-gen__button"
           style={{ marginBottom: '10px' }}
           variant="outline-secondary"
           onClick={onRandomButtonClick}
@@ -65,6 +68,12 @@ const RandomGen = ({
       )
       : null
   );
+
+  const removeAnimation = () => {
+    if (!isFetchingEpisode) {
+      setIsAnimating(false);
+    }
+  };
 
   const renderRandomEpisode = () => (
     <div className="random-gen-container">
@@ -78,14 +87,20 @@ const RandomGen = ({
           displayValue={episode?.toString()}
         />
       </div>
-      <Button className="refresh-button" variant="light" onClick={onRandomButtonClick}>
+      <Button
+        autoFocus
+        onAnimationIteration={removeAnimation}
+        className={`${'refresh-button'} ${isAnimating ? 'refreshing' : ''}`}
+        variant="light"
+        onClick={onRandomButtonClick}
+      >
         <img alt="refresh" src="assets/refresh.png" className="refresh-button-icon" />
       </Button>
     </div>
   );
   return (
     <div style={{ textAlign: 'center' }}>
-      {displayButton || isFetchingEpisode
+      {displayButton
         ? renderRandomButton()
         : renderRandomEpisode()}
     </div>
