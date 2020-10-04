@@ -2,6 +2,8 @@ import immutable from 'immutable';
 import actionTypes from './action-types';
 import resultsTypeMap from '../components/utils/resultTypeMap';
 
+// TODO Add paging to network request on all search results for scroll bottom
+
 const INITIAL_STATE = immutable.fromJS({
   loading: false,
   isFetchingEpisode: false,

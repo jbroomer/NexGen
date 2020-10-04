@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Card, InputGroup, FormControl } from 'react-bootstrap';
 import './styles/search.css';
@@ -8,24 +8,40 @@ const propTypes = {
   currentResultType: PropTypes.string.isRequired,
 };
 
+const debounceSearch = (func, duration) => {
+  let debounceTimeout;
+  return (value) => {
+    if(debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+    debounceTimeout = setTimeout(func.bind(this, value), duration)
+  }
+};
+
+
 const Search = ({
   searchHandler,
   currentResultType,
 }) => {
-  const [searchString, setSearchString] = useState('');
+  const inputRef = useRef(null);
   /**
    * Reset the search bar if another filter option is selected
    */
   useEffect(() => {
-    if (currentResultType !== 'custom') {
-      setSearchString('');
+    if (currentResultType !== 'custom' && inputRef.current) {
+      inputRef.current.value = "";
     }
   }, [currentResultType]);
 
-  const onSearchChange = (e) => {
-    setSearchString(e.target.value);
-    searchHandler('custom', e.target.value);
-  };
+
+  const handleDebounceSearch = debounceSearch((value) => {
+    searchHandler('custom', value);
+  }, 250);
+
+  const onSearch = (e) => {
+    const { value } = e.target;
+    handleDebounceSearch(value);
+  }
 
   return (
     <Card className="search">
@@ -38,8 +54,8 @@ const Search = ({
             id="customSearch"
             placeholder="Enter Search Term"
             aria-label="Enter Search Term"
-            value={searchString}
-            onChange={onSearchChange}
+            onChange={onSearch}
+            ref={inputRef}
           />
         </InputGroup>
       </Card.Body>

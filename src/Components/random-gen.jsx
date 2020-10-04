@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import BoldTextDisplay from './bold-text-display';
 import { refreshRandomEpisode } from '../redux/actions';
+import RefreshIcon from '../refresh.svg'
 import './styles/random-gen.css';
 
 const mapStateToProps = (state) => ({
@@ -94,7 +95,7 @@ const RandomGen = ({
         variant="light"
         onClick={onRandomButtonClick}
       >
-        <img alt="refresh" src="assets/refresh.png" className="refresh-button-icon" />
+        <RefreshIcon className="refresh-button-icon" />
       </Button>
     </div>
   );

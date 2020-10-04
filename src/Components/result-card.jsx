@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 import RandomGen from './random-gen';
 import './styles/result-card.css';
-/**
- * Returns a bootstrap column component containing all card media required
- * to generate a random epidsoe. Also, hooks up link to redirect to show info
- * on movie database website
- */
 
 const propTypes = {
   episode: PropTypes.shape({
@@ -18,6 +13,11 @@ const propTypes = {
   }).isRequired,
 };
 
+/**
+ * Returns a bootstrap column component containing all card media required
+ * to generate a random epidsoe. Also, hooks up link to redirect to show info
+ * on movie database website
+ */
 const ResultCard = ({
   episode,
 }) => {
@@ -37,6 +37,7 @@ const ResultCard = ({
         onClick={visitShowPage}
         variant="top"
         src={imgPath}
+        alt="Background Image"
       />
       <Card.Body className="card-body">
         <RandomGen buttonId={id.toString()} />
