@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "strict": true,
+      "target": "ES2015",
+      "moduleResolution": "node",
+      "allowJs": true,
+      "noImplicitAny": true,
+      "removeComments": true,
+      "experimentalDecorators": true,
+      "sourceMap": true,
+      "listFiles": true,
+      "esModuleInterop": true,
+      "typeRoots": ["src/@types"],
+      "jsx": "react-jsx",
+      "jsxImportSource": "@emotion/react"
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"],
+}
