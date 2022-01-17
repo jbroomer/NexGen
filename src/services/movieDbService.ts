@@ -17,10 +17,10 @@ export const getTVShowResults = async (
       tvShowResults = await getPreconfiguredShowList(TVShowListTypes.TOP_RATED);
       break;
     case TVShowListTypes.CUSTOM:
-      tvShowResults = await getCustomSearchResults(searchQuery);
+      tvShowResults = searchQuery ? await getCustomSearchResults(searchQuery) : tvShowResults;
       break;
     default:
       break;
   }
-  return tvShowResults.results || [];
+  return tvShowResults?.results || [];
 };

@@ -7,6 +7,7 @@ import { TVShowListTypes } from '../@types';
 const searchBar = css`
   width: 50vw;
   max-width: 500px;
+  min-width: 300px;
   box-shadow: 0px 0px 0px 0px black;
 `;
 
