@@ -2,7 +2,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { css } from '@emotion/react';
 import debounce from 'lodash/debounce';
 import { TextField } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { TVShowListTypes } from '../@types';
+import { RootState } from '../redux/reducers';
+import { getTvShowResults } from '../redux/actions';
 
 const searchBar = css`
   width: 50vw;
@@ -11,13 +14,15 @@ const searchBar = css`
   box-shadow: 0px 0px 0px 0px black;
 `;
 
-type Props = {
-  searchHandler: (a: TVShowListTypes, b?: string) => void;
-  currentResultType: TVShowListTypes;
-};
-
-const Search = ({ searchHandler, currentResultType }: Props) => {
+const Search = () => {
   const [searchValue, setSearchValue] = useState('');
+
+  /** Redux Stuff Start */
+  const currentResultType = useSelector((state: RootState) => state.currentResultType);
+  const dispatch = useDispatch();
+  /** Redux Stuff End */
+
+  const handleSearch = (value: string) => dispatch(getTvShowResults(TVShowListTypes.CUSTOM, value));
 
   /**
    * Reset the search bar if another filter option is selected
@@ -28,11 +33,12 @@ const Search = ({ searchHandler, currentResultType }: Props) => {
     }
   }, [currentResultType]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearch = useCallback(
     debounce((value) => {
-      searchHandler(TVShowListTypes.CUSTOM, value);
+      handleSearch(value);
     }, 250),
-    [searchHandler]
+    [handleSearch]
   );
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

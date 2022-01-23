@@ -1,18 +1,18 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
+const zlib = require('zlib');
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: '[name].[hash:8].js',
-    sourceMapFilename: '[name].[hash:8].map',
-    chunkFilename: '[id].[hash:8].js'
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
   },
-  devtool: 'eval-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? false : 'eval-source-map',
   module: {
     rules: [
       {
@@ -45,10 +45,23 @@ module.exports = {
     },
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'public',
+          globOptions: {
+            dot: true,
+            gitignore: true,
+            ignore: ['**/serviceWorker.*', '**/index.html'],
+          },
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       filename: './index.html',
     }),
+    new GenerateSW()
   ],
   devServer: {
     hot: true,

@@ -1,22 +1,27 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClickAwayListener, Grid } from '@mui/material';
-import { TVShowListTypes } from '../@types';
 import { useTVShowResults } from '../hooks/useTVShowResults';
 import { ResultRow } from './result-card/result-row';
 import LoadingIndicator from './loading-indicator';
 import { RootState } from '../redux/reducers';
-import { clearActiveTVShow } from '../redux/actions';
+import { clearActiveTVShow, getTvShowResults } from '../redux/actions';
+import { TVShowListTypes } from '../@types';
 
-type Props = {
-  currentResultType: TVShowListTypes;
-};
+const ResultsContainer = () => {
+  const tvShowResults = useTVShowResults();
 
-const ResultsContainer = ({ currentResultType }: Props) => {
+  /** Redux Stuff Start */
   const isLoading = useSelector((state: RootState) => state.loading);
   const dispatch = useDispatch();
-  const tvShowResults = useTVShowResults(currentResultType);
+  /** Redux Stuff End */
 
+  // Get initial list on mount
+  useEffect(() => {
+    dispatch(getTvShowResults(TVShowListTypes.POPULAR));
+  }, [dispatch]);
+
+  // Clear active card on click away
   const handleClickAway = useCallback(() => {
     dispatch(clearActiveTVShow());
   }, [dispatch]);

@@ -11,6 +11,9 @@ const MAX_NUM_RESULTS_MAP = {
   [ScreenSizes.LARGE]: 6,
 };
 
+/**
+ * Chunk flattened array into an array of arrays
+ */
 const chunk = (items: any[], chunkSize: number): any[][] => {
   const clonedItems = cloneDeep(items);
   const chunks = [];
@@ -23,11 +26,11 @@ const chunk = (items: any[], chunkSize: number): any[][] => {
 /**
  * Chunk the tv show results into rows of specified size based on user screen size
  */
-export const useTVShowResults = (tvShowListType: TVShowListTypes): FilteredTVShowResults[][] => {
-  const screenSize = useScreenSize();
+export const useTVShowResults = (): FilteredTVShowResults[][] => {
+  const { screenSizeLabel } = useScreenSize();
 
   const results = useSelector((state: RootState) => {
-    switch (tvShowListType) {
+    switch (state.currentResultType) {
       case TVShowListTypes.POPULAR:
         return state.popular;
       case TVShowListTypes.TOP_RATED:
@@ -39,5 +42,5 @@ export const useTVShowResults = (tvShowListType: TVShowListTypes): FilteredTVSho
     }
   });
 
-  return chunk(results, MAX_NUM_RESULTS_MAP[screenSize]);
+  return chunk(results, MAX_NUM_RESULTS_MAP[screenSizeLabel]);
 };

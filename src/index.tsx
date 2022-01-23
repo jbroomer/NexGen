@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import store from './redux/store';
 import './index.css';
 import App from './App';
+import * as serviceWorker from '../public/serviceWorker';
 
 // @ts-ignore
 globalThis.reduxStore = store;
@@ -35,3 +36,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+serviceWorker.register();

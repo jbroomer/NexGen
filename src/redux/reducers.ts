@@ -5,6 +5,7 @@ import actionTypes from './action-types';
 import { FilteredTVShowResults, TVSeason, TVShowDetails, TVShowListTypes } from '../@types';
 
 export type RootState = {
+  currentResultType: TVShowListTypes;
   loading: boolean;
   activeShow: FilteredTVShowResults | null;
   isFetchingEpisode: boolean;
@@ -17,6 +18,7 @@ export type RootState = {
 
 // TODO Add paging to network request on all search results for scroll bottom
 const INITIAL_STATE: RootState = {
+  currentResultType: TVShowListTypes.POPULAR,
   loading: false,
   activeShow: null,
   isFetchingEpisode: false,
@@ -26,6 +28,11 @@ const INITIAL_STATE: RootState = {
   seasonsById: {}, // By TVShowId
   episodesById: {}, // By TvShowId
 };
+
+const setCurrentResultType = (state: RootState, resultType: TVShowListTypes) =>
+  produce(state, (draftState) => {
+    draftState.currentResultType = resultType;
+  });
 
 const setLoadingState = (state: RootState, isLoading: boolean) =>
   produce(state, (draftState) => {
@@ -95,7 +102,8 @@ const addSeasonDetails = (state: RootState, seasonDetails: TVShowDetails) =>
   produce(state, (draftState) => {
     draftState.seasonsById[seasonDetails.id] = seasonDetails.seasons
       .sort((a, b) => a.season_number - b.season_number)
-      .filter((season) => season.season_number > 0); // 0 includes weird special episodes
+      // Remove seasons will no air_date and season_number 0 includes weird special episodes
+      .filter((season) => season.air_date && season.season_number > 0);
   });
 
 const movieSearch = (state = INITIAL_STATE, action: { type: string; data: any }) => {
@@ -105,6 +113,8 @@ const movieSearch = (state = INITIAL_STATE, action: { type: string; data: any })
   switch (action.type) {
     case actionTypes.SET_IS_LOADING:
       return setLoadingState(state, action.data.loading);
+    case actionTypes.SET_CURRENT_RESULT_TYPE:
+      return setCurrentResultType(state, action.data.tvShowListType);
     case actionTypes.SET_IS_FETCHING_EPISODE:
       return setIsFetchingState(state, action.data.isFetching);
     case actionTypes.CLEAR_SEARCH_RESULTS_CUSTOM:

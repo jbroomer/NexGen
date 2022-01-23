@@ -59,7 +59,8 @@ const randomEpisodeButton = css`
 
 const closeButton = css`
   position: absolute;
-  right: 10px;
+  right: -8px;
+  top: -8px;
 `;
 
 type RandomEpisode = {
@@ -67,9 +68,11 @@ type RandomEpisode = {
   episode: number;
 };
 
-const getRandomNumber = (max: number) => Math.floor(Math.random() * max);
+// Helper function to generate random number
+const getRandomNumber = (max: number): number => Math.floor(Math.random() * max);
 
-const formatNumberString = (num: number) => {
+// Helper function to format number with two digits
+const formatNumberString = (num: number): string => {
   const numberString = num.toString();
   return numberString.length >= 2 ? numberString : `0${numberString}`;
 };
@@ -77,14 +80,15 @@ const formatNumberString = (num: number) => {
 const RandomEpisodeGenerator = () => {
   const [randomEpisode, setRandomEpisode] = useState<RandomEpisode>({ season: 0, episode: 0 });
 
-  // Redux
-  const dispatch = useDispatch();
+  /** Redux Stuff Start */
   const activeShow = useSelector((state: RootState) => state.activeShow);
   const seasonDetails = useSelector((state: RootState) =>
     state.activeShow ? state.seasonsById[state.activeShow.id] : null
   );
+  const dispatch = useDispatch();
+  /** Redux Stuff End */
 
-  // Prevent setting the card as inactive
+  // Capture click events on overlay to prevent setting the card as inactive
   const onOverlayClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -105,7 +109,7 @@ const RandomEpisodeGenerator = () => {
   return (
     activeShow && (
       <div css={container} onClick={onOverlayClick} role="none">
-        <IconButton css={closeButton} onClick={handleClose} color="primary">
+        <IconButton disableRipple css={closeButton} onClick={handleClose} color="primary">
           <CloseIcon />
         </IconButton>
         <div css={titleContainer(activeShow.name.includes(' '))}>

@@ -21,8 +21,9 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "webpack serve --mode=development --stats-error-details",
-    "build": "webpack --mode=production",
+    "start": "cross-env NODE_ENV=development webpack serve --mode=development",
+    "start:prod": "cross-env NODE_ENV=production webpack serve --mode=production",
+    "build": "cross-env NODE_ENV=production webpack --mode=production",
     "test": "jest",
     "test:watch": "jest --watch",
     "eject": "react-scripts eject"
@@ -53,6 +54,8 @@
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
     "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^10.2.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^4.2.0",
     "eslint": "^8.5.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -75,6 +78,7 @@
     "typescript": "^4.5.4",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^4.6.0"
+    "webpack-dev-server": "^4.6.0",
+    "workbox-webpack-plugin": "^6.4.2"
   }
 }

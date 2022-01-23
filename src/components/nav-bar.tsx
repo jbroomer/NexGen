@@ -1,28 +1,23 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { AppBar, Container, Toolbar, Box, Button, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { TVShowListTypes } from '../@types';
+import { RootState } from '../redux/reducers';
+import { getTvShowResults } from '../redux/actions';
 
 const appBarButton = (selected: boolean) => css`
   text-decoration: ${selected ? 'underline' : 'none'};
 `;
 
-type Props = {
-  searchHandler: (a: TVShowListTypes, b?: string) => void;
-  currentResultType: TVShowListTypes;
-  setCurrentResultType: (a: TVShowListTypes) => void;
-};
+const NavBar = () => {
+  /** Redux Stuff Start */
+  const currentResultType = useSelector((state: RootState) => state.currentResultType);
+  const dispatch = useDispatch();
+  /** Redux Stuff End */
 
-const NavBar = ({ searchHandler, currentResultType, setCurrentResultType }: Props) => {
-  const searchPopular = () => {
-    setCurrentResultType(TVShowListTypes.POPULAR);
-    searchHandler(TVShowListTypes.POPULAR);
-  };
-
-  const searchTopRated = () => {
-    setCurrentResultType(TVShowListTypes.TOP_RATED);
-    searchHandler(TVShowListTypes.TOP_RATED);
-  };
+  const searchPopular = () => dispatch(getTvShowResults(TVShowListTypes.POPULAR));
+  const searchTopRated = () => dispatch(getTvShowResults(TVShowListTypes.TOP_RATED));
 
   return (
     <AppBar position="relative">

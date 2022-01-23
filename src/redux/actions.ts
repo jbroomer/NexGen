@@ -6,6 +6,13 @@ import { getTVShowResults } from '../services/movieDbService';
 import { RootState } from './reducers';
 import { getTVShowDetails } from '../clients/movieDbClient';
 
+const setCurrentResultType = (tvShowListType: TVShowListTypes) => ({
+  type: actionTypes.SET_CURRENT_RESULT_TYPE,
+  data: {
+    tvShowListType,
+  },
+});
+
 const addResults = (tvShowListType: TVShowListTypes, tvShowResults: FilteredTVShowResults[]) => ({
   type: actionTypes.UPDATE_SEARCH_RESULTS,
   data: {
@@ -99,6 +106,15 @@ const getTvShowResults =
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
   async (dispatch) => {
     dispatch(setIsLoading(true));
+
+    // Default to Popular if all characters from search are removed
+    if (tvShowListType === TVShowListTypes.CUSTOM && !searchQuery) {
+      await dispatch(getPopularResults());
+      dispatch(setCurrentResultType(TVShowListTypes.POPULAR));
+      dispatch(setIsLoading(false));
+      return;
+    }
+
     switch (tvShowListType) {
       case TVShowListTypes.POPULAR:
         await dispatch(getPopularResults());
@@ -112,6 +128,7 @@ const getTvShowResults =
       default:
         break;
     }
+    dispatch(setCurrentResultType(tvShowListType));
     dispatch(setIsLoading(false));
   };
 

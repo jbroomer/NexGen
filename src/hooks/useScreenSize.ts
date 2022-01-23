@@ -26,7 +26,12 @@ const getWindowSize = (): ScreenSizes => {
   return ScreenSizes.SMALL;
 };
 
-export const useScreenSize = (): ScreenSizes => {
+type UseScreenSizeHook = () => {
+  screenSizeLabel: ScreenSizes;
+  isMobile: boolean;
+};
+
+export const useScreenSize: UseScreenSizeHook = () => {
   const [screenSizeLabel, setScreenSizeLabel] = useState(ScreenSizes.MEDIUM);
 
   // Get intial window size
@@ -45,5 +50,8 @@ export const useScreenSize = (): ScreenSizes => {
     };
   }, []);
 
-  return screenSizeLabel;
+  return {
+    screenSizeLabel,
+    isMobile: screenSizeLabel === ScreenSizes.SMALL,
+  };
 };

@@ -38,9 +38,10 @@ const CardContainer = ({ tvShow }: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  // Redux State
-  const dispatch = useDispatch();
+  /** Redux Stuff Start */
   const activeShow = useSelector((state: RootState) => state.activeShow);
+  const dispatch = useDispatch();
+  /** Redux Stuff End */
 
   const isActive = activeShow?.id === tvShow.id;
 
@@ -54,7 +55,7 @@ const CardContainer = ({ tvShow }: Props) => {
     (e: React.MouseEvent<HTMLImageElement>) => {
       if (!isActive) {
         dispatch(retrieveAndSetActiveTVShow(tvShow));
-        // @ts-ignore Property is not documented on HTMLElement
+        // @ts-ignore Property is not documented on HTMLElement and doesn't work on Safari
         e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
