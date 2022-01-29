@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { css } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, IconButton, Typography } from '@mui/material';
@@ -61,6 +61,11 @@ const closeButton = css`
   position: absolute;
   right: -8px;
   top: -8px;
+  &:focus {
+    svg {
+      outline: 1px solid white;
+    }
+  }
 `;
 
 type RandomEpisode = {
@@ -79,6 +84,7 @@ const formatNumberString = (num: number): string => {
 
 const RandomEpisodeGenerator = () => {
   const [randomEpisode, setRandomEpisode] = useState<RandomEpisode>({ season: 0, episode: 0 });
+  const randomButtonRef = useRef<HTMLElement>();
 
   /** Redux Stuff Start */
   const activeShow = useSelector((state: RootState) => state.activeShow);
@@ -106,19 +112,32 @@ const RandomEpisodeGenerator = () => {
     dispatch(clearActiveTVShow());
   }, [dispatch]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key !== 'Escape') {
+      e.stopPropagation();
+    }
+  };
+
+  // Autofocus random button
+  useEffect(() => {
+    if (randomButtonRef.current) {
+      randomButtonRef.current.focus();
+    }
+  }, []);
+
   return (
     activeShow && (
-      <div css={container} onClick={onOverlayClick} role="none">
+      <div onKeyDown={handleKeyDown} css={container} onClick={onOverlayClick} role="none">
         <IconButton disableRipple css={closeButton} onClick={handleClose} color="primary">
           <CloseIcon />
         </IconButton>
         <div css={titleContainer(activeShow.name.includes(' '))}>
-          <Typography variant="h5" color="primary">
+          <Typography variant="h5" color="primary" title={activeShow.name}>
             {activeShow.name}
           </Typography>
         </div>
         <div css={descriptionContainer}>
-          <Typography css={descriptionText} color="primary">
+          <Typography css={descriptionText} color="primary" title={activeShow.overview}>
             {activeShow.overview}
           </Typography>
         </div>
@@ -131,7 +150,14 @@ const RandomEpisodeGenerator = () => {
           </Typography>
         </div>
         <div css={randomEpisodeButtonContainer}>
-          <Button onClick={generateRandomEpisode} css={randomEpisodeButton} variant="contained">
+          {/* @ts-ignore */}
+          <Button
+            ref={randomButtonRef}
+            onClick={generateRandomEpisode}
+            css={randomEpisodeButton}
+            variant="contained"
+            aria-label="Close Card"
+          >
             Random Episode
           </Button>
         </div>

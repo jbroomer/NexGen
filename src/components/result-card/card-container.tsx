@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { css } from '@emotion/react';
 import { Card, CardMedia, Skeleton } from '@mui/material';
+import { detect } from 'detect-browser';
 import { FilteredTVShowResults } from '../../@types';
 import { RootState } from '../../redux/reducers';
 import { clearActiveTVShow, retrieveAndSetActiveTVShow } from '../../redux/actions';
@@ -51,17 +52,28 @@ const CardContainer = ({ tvShow }: Props) => {
     }
   }, [tvShow.imgPath]);
 
-  const handleCardClick = useCallback(
-    (e: React.MouseEvent<HTMLImageElement>) => {
+  const triggerActiveCard = useCallback(
+    (e: React.MouseEvent<HTMLImageElement> | React.KeyboardEvent<HTMLElement>) => {
       if (!isActive) {
         dispatch(retrieveAndSetActiveTVShow(tvShow));
-        // @ts-ignore Property is not documented on HTMLElement and doesn't work on Safari
-        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Smooth scrolling doesn't work on safari and is jarring without it
+        if (detect()?.name !== 'safari') {
+          // @ts-ignore Property is not documented on HTMLElement
+          e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
       dispatch(clearActiveTVShow());
     },
     [dispatch, isActive, tvShow]
+  );
+
+  const handleCardClick = useCallback(
+    (e: React.MouseEvent<HTMLImageElement>) => {
+      triggerActiveCard(e);
+    },
+    [triggerActiveCard]
   );
 
   const onTransitionEnd = () => {
@@ -74,8 +86,28 @@ const CardContainer = ({ tvShow }: Props) => {
     }
   }, [isActive]);
 
+  const onEnterKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    switch (e.key) {
+      case 'Enter':
+        triggerActiveCard(e);
+        break;
+      case 'Escape':
+        dispatch(clearActiveTVShow());
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
-    <Card onTransitionEnd={onTransitionEnd} onClick={handleCardClick} css={cardContainer(isActive)}>
+    <Card
+      tabIndex={0}
+      onTransitionEnd={onTransitionEnd}
+      onClick={handleCardClick}
+      css={cardContainer(isActive)}
+      onKeyDown={onEnterKeyDown}
+      aria-label={tvShow.name}
+    >
       {isLoading && (
         <Skeleton variant="rectangular" height={DEFAULT_CARD_HEIGHT} width={DEFAULT_CARD_WIDTH} />
       )}
@@ -85,6 +117,7 @@ const CardContainer = ({ tvShow }: Props) => {
         css={cardMediaStyles(isLoading)}
         image={tvShow.imgPath}
         title={tvShow.name}
+        alt={`${tvShow.name} Poster Image`}
       />
       {showOverlay && <RandomEpisodeGenerator />}
     </Card>

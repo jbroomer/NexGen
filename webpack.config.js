@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const zlib = require('zlib');
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -61,7 +60,10 @@ module.exports = {
       template: './public/index.html',
       filename: './index.html',
     }),
-    new GenerateSW()
+    new GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    })
   ],
   devServer: {
     hot: true,

@@ -5,10 +5,11 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import store from './redux/store';
 import './index.css';
 import App from './App';
-import * as serviceWorker from '../public/serviceWorker';
 
-// @ts-ignore
-globalThis.reduxStore = store;
+if (process.env.NODE_ENV === 'development') {
+  // @ts-ignore
+  globalThis.reduxStore = store;
+}
 
 const muiTheme = createTheme({
   palette: {
@@ -37,4 +38,18 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.register();
+// Register the service-worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then((registration) => {
+        // eslint-disable-next-line no-console
+        console.log('SW registered: ', registration);
+      })
+      .catch((registrationError) => {
+        // eslint-disable-next-line no-console
+        console.error('SW registration failed: ', registrationError);
+      });
+  });
+}
