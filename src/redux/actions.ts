@@ -94,58 +94,58 @@ const getTopRatedResults =
  */
 const getCustomResults =
   (searchQuery: string): ThunkAction<void, RootState, unknown, AnyAction> =>
-  async (dispatch) => {
-    const results = await getFilteredTVShowResults(TVShowListTypes.CUSTOM, searchQuery);
-    dispatch(addResults(TVShowListTypes.CUSTOM, results));
-  };
+    async (dispatch) => {
+      const results = await getFilteredTVShowResults(TVShowListTypes.CUSTOM, searchQuery);
+      dispatch(addResults(TVShowListTypes.CUSTOM, results));
+    };
 
 const getTvShowResults =
   (
     tvShowListType: TVShowListTypes,
     searchQuery?: string
   ): ThunkAction<void, RootState, unknown, AnyAction> =>
-  async (dispatch) => {
-    dispatch(setIsLoading(true));
+    async (dispatch) => {
+      dispatch(setIsLoading(true));
 
-    // Default to Popular if all characters from search are removed
-    if (tvShowListType === TVShowListTypes.CUSTOM && !searchQuery) {
-      await dispatch(getPopularResults());
-      dispatch(setCurrentResultType(TVShowListTypes.POPULAR));
-      dispatch(setIsLoading(false));
-      return;
-    }
-
-    switch (tvShowListType) {
-      case TVShowListTypes.POPULAR:
+      // Default to Popular if all characters from search are removed
+      if (tvShowListType === TVShowListTypes.CUSTOM && !searchQuery) {
         await dispatch(getPopularResults());
-        break;
-      case TVShowListTypes.TOP_RATED:
-        await dispatch(getTopRatedResults());
-        break;
-      case TVShowListTypes.CUSTOM:
-        await dispatch(getCustomResults(searchQuery as string));
-        break;
-      default:
-        break;
-    }
-    dispatch(setCurrentResultType(tvShowListType));
-    dispatch(setIsLoading(false));
-  };
+        dispatch(setCurrentResultType(TVShowListTypes.POPULAR));
+        dispatch(setIsLoading(false));
+        return;
+      }
+
+      switch (tvShowListType) {
+        case TVShowListTypes.POPULAR:
+          await dispatch(getPopularResults());
+          break;
+        case TVShowListTypes.TOP_RATED:
+          await dispatch(getTopRatedResults());
+          break;
+        case TVShowListTypes.CUSTOM:
+          await dispatch(getCustomResults(searchQuery as string));
+          break;
+        default:
+          break;
+      }
+      dispatch(setCurrentResultType(tvShowListType));
+      dispatch(setIsLoading(false));
+    };
 
 const getAllSeasons =
   (id: number): ThunkAction<void, RootState, unknown, AnyAction> =>
-  async (dispatch) => {
-    const allSeasons = await getTVShowDetails(id);
-    dispatch(addAllSeasons(allSeasons));
-  };
+    async (dispatch) => {
+      const allSeasons = await getTVShowDetails(id);
+      dispatch(addAllSeasons(allSeasons));
+    };
 
 const retrieveAndSetActiveTVShow =
   (tvShow: FilteredTVShowResults): ThunkAction<void, RootState, unknown, AnyAction> =>
-  async (dispatch, getState) => {
-    if (!getState().seasonsById[tvShow.id]) {
-      dispatch(getAllSeasons(tvShow.id));
-    }
-    dispatch(setActiveTVShow(tvShow));
-  };
+    async (dispatch, getState) => {
+      if (!getState().seasonsById[tvShow.id]) {
+        dispatch(getAllSeasons(tvShow.id));
+      }
+      dispatch(setActiveTVShow(tvShow));
+    };
 
 export { getTvShowResults, getAllSeasons, retrieveAndSetActiveTVShow, clearActiveTVShow };
